@@ -1,0 +1,4 @@
+include ':lib-1'
+include ':hacker-gradle-plugin'
+include ':app'
+rootProject.name = "Hacker"
