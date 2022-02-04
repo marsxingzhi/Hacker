@@ -2,4 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.mars.infra.lib">
 
+    <application>
+        <activity
+            android:name=".TestLibActivity"
+            android:label="@string/title_activity_test_lib"></activity>
+    </application>
+
 </manifest>

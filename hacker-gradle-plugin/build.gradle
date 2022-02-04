@@ -1,6 +1,7 @@
 plugins {
     id 'java-library'
     id 'kotlin'
+    id 'maven-publish'
 }
 
 java {
@@ -8,6 +9,25 @@ java {
     targetCompatibility = JavaVersion.VERSION_1_7
 }
 
+repositories {
+    google()
+    jcenter()
+    mavenCentral()
+}
+
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation gradleApi()
+    implementation "com.android.tools.build:gradle:4.1.3"
+}
+
+publishing {
+    publications {
+        HackerPlugin(MavenPublication) {
+            from components.kotlin
+            groupId 'com.mars.infra'
+            artifactId 'hacker-plugin'
+            version '0.0.6'
+        }
+    }
 }
