@@ -2,9 +2,11 @@ package com.mars.infra.hacker.gradle.plugin
 
 import com.android.build.api.transform.*
 import com.mars.infra.hacker.gradle.plugin.visitor.HackerClassVisitor
+import com.mars.infra.hacker.gradle.plugin.visitor.thread.ClassThreadOptVisitor
 import org.apache.commons.codec.digest.DigestUtils
 import org.apache.commons.io.FileUtils
 import org.objectweb.asm.ClassReader
+import org.objectweb.asm.ClassVisitor
 import org.objectweb.asm.ClassWriter
 import org.objectweb.asm.Opcodes
 import java.io.File
@@ -101,8 +103,7 @@ class HackerTransform : BaseTransform() {
     private fun doTransform(inputStream: ByteArray): ByteArray? {
         val classReader = ClassReader(inputStream)
         val classWriter = ClassWriter(classReader, 0)
-        val hackerClassVisitor = HackerClassVisitor(Opcodes.ASM7, classWriter)
-        classReader.accept(hackerClassVisitor, ClassReader.EXPAND_FRAMES)
+        classReader.accept(buildClassVisitor(classWriter), ClassReader.EXPAND_FRAMES)
         return classWriter.toByteArray()
     }
 
@@ -144,13 +145,17 @@ class HackerTransform : BaseTransform() {
         val classReader = ClassReader(fileInputStream)
         val classWriter = ClassWriter(classReader, ClassWriter.COMPUTE_FRAMES)
 
-        val hackerClassVisitor = HackerClassVisitor(Opcodes.ASM7, classWriter)
-        classReader.accept(hackerClassVisitor, ClassReader.SKIP_DEBUG or ClassReader.SKIP_FRAMES)
+        classReader.accept(buildClassVisitor(classWriter), ClassReader.SKIP_DEBUG or ClassReader.SKIP_FRAMES)
 
         val bytes = classWriter.toByteArray()
         val fileOutputStream = FileOutputStream(File(outputPath))
         fileOutputStream.write(bytes)
         fileOutputStream.close()
         fileInputStream.close()
+    }
+
+    private fun buildClassVisitor(classWriter: ClassWriter): ClassVisitor {
+        val hackerClassVisitor = HackerClassVisitor(Opcodes.ASM7, classWriter)
+        return ClassThreadOptVisitor(Opcodes.ASM7, hackerClassVisitor, "query", "()V")
     }
 }
