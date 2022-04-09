@@ -2,7 +2,7 @@ package com.mars.infra.hacker.method.invoke.optimize
 
 import com.android.build.api.transform.*
 import com.android.build.gradle.internal.pipeline.TransformManager
-import com.mars.infra.hacker.method.invoke.optimize.visitor.MethodOptimizeVisitor
+import com.mars.infra.hacker.method.invoke.optimize.visitor.SimpleMethodOptimizeVisitor
 import org.apache.commons.codec.digest.DigestUtils
 import org.apache.commons.io.FileUtils
 import org.objectweb.asm.ClassReader
@@ -116,7 +116,8 @@ class MethodOptimizeTransform: Transform() {
         // Type androidx/transition/TransitionSet not present
 
         val cw = ClassWriter(cr, 0)
-        val methodOptVisitor = MethodOptimizeVisitor(cw)
+        val target = Target("com/mars/infra/hacker/TestCode", "test1", "()V")
+        val methodOptVisitor = SimpleMethodOptimizeVisitor(cw,target)
         cr.accept(methodOptVisitor, ClassReader.SKIP_DEBUG or ClassReader.SKIP_FRAMES)
         return cw.toByteArray()
     }
@@ -141,5 +142,4 @@ class MethodOptimizeTransform: Transform() {
         putNextEntry(zipEntry)
         write(byteArray)
     }
-
 }
