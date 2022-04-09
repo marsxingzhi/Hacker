@@ -1,4 +1,5 @@
 include ':lib-1'
 include ':hacker-gradle-plugin'
+include ':method-invoke-optimize-plugin'
 include ':app'
 rootProject.name = "Hacker"
