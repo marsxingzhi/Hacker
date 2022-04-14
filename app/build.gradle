@@ -1,7 +1,6 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
-//    id 'com.mars.infra.plugin.hacker'
     id 'com.mars.infra.method.invoke.optimize.plugin'
 }
 

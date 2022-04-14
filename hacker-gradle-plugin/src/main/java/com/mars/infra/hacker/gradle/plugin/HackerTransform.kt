@@ -1,6 +1,7 @@
 package com.mars.infra.hacker.gradle.plugin
 
 import com.android.build.api.transform.*
+import com.android.build.gradle.internal.pipeline.TransformManager
 import com.mars.infra.hacker.gradle.plugin.visitor.HackerClassVisitor
 import com.mars.infra.hacker.gradle.plugin.visitor.thread.ClassThreadOptVisitor
 import org.apache.commons.codec.digest.DigestUtils
@@ -17,12 +18,20 @@ import java.util.zip.ZipEntry
 import java.util.zip.ZipFile
 import java.util.zip.ZipOutputStream
 
-class HackerTransform : BaseTransform() {
+class HackerTransform : Transform() {
 
     private var outputProvider: TransformOutputProvider? = null
     private var mIsIncremental = false
 
     override fun getName(): String = "HackerTransform"
+
+    override fun getInputTypes(): MutableSet<QualifiedContent.ContentType> =
+        TransformManager.CONTENT_CLASS
+
+    override fun getScopes(): MutableSet<in QualifiedContent.Scope> =
+        TransformManager.SCOPE_FULL_PROJECT
+
+    override fun isIncremental(): Boolean = false
 
     override fun transform(transformInvocation: TransformInvocation) {
         super.transform(transformInvocation)

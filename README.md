@@ -2,6 +2,7 @@
 ByteCode Plugin Platform
 
 ### TODO   
+- [ ] 重新设计Hacker架构
 - [ ] method-invoke-optimize
 
 

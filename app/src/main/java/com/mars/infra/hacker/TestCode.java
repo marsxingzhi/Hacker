@@ -10,6 +10,7 @@ class TestCode {
     // 测试通过
     private static void test1() {
         Log.e("TestCode", "执行 test1 方法");
+        System.out.println("哈哈");
     }
 
     public void test2(int flag) {
