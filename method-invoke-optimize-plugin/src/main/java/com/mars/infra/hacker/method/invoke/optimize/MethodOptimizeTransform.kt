@@ -2,6 +2,7 @@ package com.mars.infra.hacker.method.invoke.optimize
 
 import com.android.build.api.transform.TransformInvocation
 import com.mars.infra.hacker.gradle.plugin.BaseTransform
+import com.mars.infra.hacker.method.invoke.optimize.visitor.MethodRemoveClassNode
 import com.mars.infra.hacker.method.invoke.optimize.visitor.SimpleMethodOptimizeVisitor
 import org.objectweb.asm.ClassReader
 import org.objectweb.asm.ClassWriter
@@ -25,9 +26,16 @@ class MethodOptimizeTransform : BaseTransform() {
             // 使用val cw = ClassWriter(cr, ClassWriter.COMPUTE_FRAMES)，编译出现如下错误：
             // Type androidx/transition/TransitionSet not present
             val cw = ClassWriter(cr, 0)
-            val target = Target("com/mars/infra/hacker/TestCode", "test1", "()V")
-            val methodOptVisitor = SimpleMethodOptimizeVisitor(cw, target)
-            cr.accept(methodOptVisitor, ClassReader.SKIP_DEBUG or ClassReader.SKIP_FRAMES)
+            val target = Target("com/mars/infra/hacker/TestCode", "", "")
+
+            // core api
+//            val methodOptVisitor = SimpleMethodOptimizeVisitor(cw, target)
+//            cr.accept(methodOptVisitor, ClassReader.SKIP_DEBUG or ClassReader.SKIP_FRAMES)
+
+            // tree api
+            val cn = MethodRemoveClassNode(cw, target)
+            cr.accept(cn, ClassReader.SKIP_DEBUG or ClassReader.SKIP_FRAMES)
+
             cw.toByteArray()
         }
     }

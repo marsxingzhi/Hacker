@@ -5,6 +5,8 @@ import com.android.build.api.transform.JarInput
 import com.android.build.api.transform.TransformInvocation
 import org.apache.commons.codec.digest.DigestUtils
 import org.apache.commons.io.FileUtils
+import org.objectweb.asm.tree.ClassNode
+import org.objectweb.asm.tree.MethodNode
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
@@ -119,4 +121,19 @@ fun ZipOutputStream.writeEntry(entryName: String, byteArray: ByteArray) {
     }
     putNextEntry(zipEntry)
     write(byteArray)
+}
+
+
+abstract class ClassTransformer(private val ct: ClassTransformer?) {
+
+    open fun transform(cn: ClassNode?) {
+        ct?.transform(cn)
+    }
+}
+
+abstract class MethodTransformer(private val mt: MethodTransformer?) {
+
+    open fun transform(node: MethodNode?) {
+        mt?.transform(node)
+    }
 }
