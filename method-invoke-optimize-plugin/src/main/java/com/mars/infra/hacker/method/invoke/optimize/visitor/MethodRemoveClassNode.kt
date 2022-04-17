@@ -16,7 +16,7 @@ class MethodRemoveClassNode(private val classVisitor: ClassVisitor, private val 
 
     override fun visitEnd() {
 
-        val transformer = MethodRemoveAdapter(null)
+        val transformer = MethodRemoveAdapter(target, null)
 
         methods.filter {
             it.access and Opcodes.ACC_ABSTRACT == 0
@@ -41,7 +41,7 @@ class MethodRemoveClassNode(private val classVisitor: ClassVisitor, private val 
  * 几个问题：
  * 1.  parameterStack为什么使用栈，而不是队列呢？ 方法的描述符压入栈中，那么从栈中首先弹出的是最后一个描述符，与逆序查找对应起来
  */
-class MethodRemoveAdapter(methodTransformer: MethodTransformer?) :
+class MethodRemoveAdapter(private val target: Target, methodTransformer: MethodTransformer?) :
     MethodTransformer(methodTransformer) {
 
     override fun transform(node: MethodNode?) {
@@ -52,12 +52,14 @@ class MethodRemoveAdapter(methodTransformer: MethodTransformer?) :
         // 同一个方法中可能存在多段需要删除的指令区间
         val optimizeInsnList = arrayListOf<List<AbstractInsnNode>>()
 
-        var idx = node.instructions.size() - 1;
+        var idx = node.instructions.size() - 1
         while (idx >= 0) {
             val curInsn = node.instructions[idx]
             if (curInsn is MethodInsnNode
                 && (curInsn.opcode == Opcodes.INVOKESTATIC
                         || curInsn.opcode == Opcodes.INVOKEVIRTUAL)
+                && (curInsn.owner == target.methodOwner
+                        && curInsn.name == target.methodName)
             ) {
                 val argumentTypes = Type.getArgumentTypes(curInsn.desc)
                 val isStatic = (curInsn.opcode and Opcodes.ACC_STATIC) != 0
@@ -69,11 +71,13 @@ class MethodRemoveAdapter(methodTransformer: MethodTransformer?) :
                 argumentTypes.forEach {
                     parameterStack.push(it)
                 }
-                val startIndex = processParameter(node.instructions, parameterStack, idx)
+                var startIndex = processParameter(node.instructions, parameterStack, idx)
                 println("startIndex = $startIndex")
                 if (startIndex < 0) {
                     throw Exception("startIndex < 0，delete instruction occur error")
                 }
+
+
                 var endIndex = idx
                 // 加一个逻辑，如果待删除的方法有返回值，且该返回值未被其他指令消费，那么则需要将POP或者POP2指令也删除
                 val returnType = Type.getReturnType(curInsn.desc)
@@ -84,6 +88,32 @@ class MethodRemoveAdapter(methodTransformer: MethodTransformer?) :
                         endIndex = idx + 1
                     }
                 }
+
+
+                // 判断如果待删除方法指令后面开始FrameNode指令的话，需要将待删除方法指令区间之前的FrameNode指令删除(如果有的话)
+                // 两个FrameNode连续连在一起，会出现异常
+                var frameNodeExist = false
+                for (i in endIndex until node.instructions.size()) {
+                    if (node.instructions[i] is FrameNode) {
+                        frameNodeExist = true
+                        break
+                    }
+                }
+                if (frameNodeExist) {
+                   var i = startIndex - 1
+                    while (i >= 0) {
+                        val lastNode = node.instructions[i]
+                        // opcode大于等于0，表示其他方法或者字段的指令了
+                        if (lastNode.opcode >= 0 || lastNode is LabelNode) break
+                        if (lastNode is FrameNode) {
+                            startIndex = i
+                            break
+                        }
+                        i--
+                    }
+                }
+
+
 
                 val removeList = arrayListOf<AbstractInsnNode>()
                 for (i in startIndex until endIndex + 1) {

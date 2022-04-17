@@ -10,12 +10,12 @@ public class Logger {
         return -1;
     }
 
-    public int ee2(String tag, int code) {
+    public int ee(String tag, int code) {
         System.out.println("tag = " + tag + ", code = " + code);
         return -1;
     }
 
-    public int ee3(String tag, float code) {
+    public int ee(String tag, float code) {
         System.out.println("tag = " + tag + ", code = " + code);
         return -1;
     }

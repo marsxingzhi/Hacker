@@ -26,7 +26,11 @@ class MethodOptimizeTransform : BaseTransform() {
             // 使用val cw = ClassWriter(cr, ClassWriter.COMPUTE_FRAMES)，编译出现如下错误：
             // Type androidx/transition/TransitionSet not present
             val cw = ClassWriter(cr, 0)
-            val target = Target("com/mars/infra/hacker/TestCode", "", "")
+            val target = Target(
+                "com/mars/infra/hacker/TestCode",
+                "com/mars/infra/hacker/Logger",
+                "ee",
+                "(Ljava/lang/String;Ljava/lang/String;)I")
 
             // core api
 //            val methodOptVisitor = SimpleMethodOptimizeVisitor(cw, target)

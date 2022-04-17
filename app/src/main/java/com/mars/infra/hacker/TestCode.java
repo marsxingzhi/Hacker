@@ -11,11 +11,18 @@ class TestCode {
     private static void test1() {
 //        Log.e("TestCode", "执行 test1 方法");
 
+        System.out.println("哈哈 - 1");
         Logger logger = new Logger();
-//        logger.ee("TestCode", "执行 test1 方法");
-        logger.ee2("TestCode", 123456789);
+        logger.ee("TestCode", "执行 test1 方法");
+//        logger.ee2("TestCode", 123456789);
+        login();
+        logger.ee("TestCode", 1024);
+        logger.ee("TestCode", 123.0f);
+//        System.out.println("哈哈 - 2");
 
-        logger.ee3("TestCode", 123.0f);
+    }
+
+    private static void login() {
 
     }
 
