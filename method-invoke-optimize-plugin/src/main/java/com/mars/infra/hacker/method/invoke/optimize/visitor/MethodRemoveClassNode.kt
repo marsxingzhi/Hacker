@@ -222,8 +222,27 @@ class MethodRemoveAdapter(private val target: Target, methodTransformer: MethodT
                     result = processParameter(insnList, parameterStack, prev)
                 }
             }
+            Opcodes.ISTORE -> {
+                parameterStack.push(Type.INT_TYPE)
+                result = processParameter(insnList, parameterStack, prev)
+            }
+            Opcodes.LSTORE -> {
+                parameterStack.push(Type.LONG_TYPE)
+                result = processParameter(insnList, parameterStack, prev)
+            }
+            Opcodes.FSTORE -> {
+                parameterStack.push(Type.FLOAT_TYPE)
+                result = processParameter(insnList, parameterStack, prev)
+            }
+            Opcodes.DSTORE -> {
+                parameterStack.push(Type.DOUBLE_TYPE)
+                result = processParameter(insnList, parameterStack, prev)
+            }
+            Opcodes.ASTORE -> {
+                parameterStack.push(Type.getType(Any::class.java))
+                result = processParameter(insnList, parameterStack, prev)
+            }
             else -> {
-
             }
         }
         return result
