@@ -4,6 +4,11 @@ plugins {
     id 'com.mars.infra.method.invoke.optimize.plugin'
 }
 
+methodInvokeOptimize {
+    enable = true
+    removeMethod = "com/mars/infra/hacker/Logger#ee#(Ljava/lang/String;Ljava/lang/String;)I"
+}
+
 android {
     compileSdkVersion 31
     buildToolsVersion "30.0.3"

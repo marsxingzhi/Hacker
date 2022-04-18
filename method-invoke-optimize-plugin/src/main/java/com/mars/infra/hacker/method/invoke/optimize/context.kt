@@ -15,3 +15,8 @@ data class Target(
     val methodName: String,  // 待删除方法的方法名
     val methodDesc: String  // 待删除方法的方法描述符
 )
+
+object HackerContext {
+
+    var removeMethod: String? = null
+}

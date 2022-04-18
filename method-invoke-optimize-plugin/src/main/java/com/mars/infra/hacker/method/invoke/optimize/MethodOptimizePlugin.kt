@@ -11,6 +11,17 @@ class MethodOptimizePlugin: Plugin<Project> {
 
     override fun apply(project: Project) {
         println("MethodOptimizePlugin apply")
+        // 创建配置项
+        project.extensions.create("methodInvokeOptimize", MethodInvokeOptimizeExtension::class.java)
+
+
+        project.afterEvaluate {
+            val methodInvokeOptimize = project.extensions.getByType(MethodInvokeOptimizeExtension::class.java)
+            println("methodInvokeOptimize = $methodInvokeOptimize")
+            HackerContext.removeMethod = methodInvokeOptimize.removeMethod
+        }
+
+
         val appExtension = project.extensions.getByType(AppExtension::class.java)
         appExtension.registerTransform(MethodOptimizeTransform())
     }

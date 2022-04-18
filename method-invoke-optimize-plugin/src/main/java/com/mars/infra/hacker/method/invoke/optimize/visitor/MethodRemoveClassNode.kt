@@ -11,19 +11,17 @@ import java.util.*
 /**
  * Created by Mars on 2022/4/16
  */
-class MethodRemoveClassNode(private val classVisitor: ClassVisitor, private val target: Target) :
-    ClassNode(Opcodes.ASM7) {
+class MethodRemoveClassNode(private val classVisitor: ClassVisitor) : ClassNode(Opcodes.ASM7) {
 
     override fun visitEnd() {
 
-        val transformer = MethodRemoveAdapter(target, null)
+        val transformer = MethodRemoveAdapter(null)
 
         methods.filter {
             it.access and Opcodes.ACC_ABSTRACT == 0
                     && it.access and Opcodes.ACC_NATIVE == 0
                     && it.name != "<init>"
                     && it.name != "<clinit>"
-                    && name == target.className
         }.forEach {
             transformer.transform(it)
         }
@@ -41,7 +39,7 @@ class MethodRemoveClassNode(private val classVisitor: ClassVisitor, private val 
  * 几个问题：
  * 1.  parameterStack为什么使用栈，而不是队列呢？ 方法的描述符压入栈中，那么从栈中首先弹出的是最后一个描述符，与逆序查找对应起来
  */
-class MethodRemoveAdapter(private val target: Target, methodTransformer: MethodTransformer?) :
+class MethodRemoveAdapter(methodTransformer: MethodTransformer?) :
     MethodTransformer(methodTransformer) {
 
     override fun transform(node: MethodNode?) {
@@ -57,10 +55,14 @@ class MethodRemoveAdapter(private val target: Target, methodTransformer: MethodT
             val curInsn = node.instructions[idx]
             if (curInsn is MethodInsnNode
                 && (curInsn.opcode == Opcodes.INVOKESTATIC
-                        || curInsn.opcode == Opcodes.INVOKEVIRTUAL)
-                && (curInsn.owner == target.methodOwner
-                        && curInsn.name == target.methodName)
-            ) {
+                        || curInsn.opcode == Opcodes.INVOKEVIRTUAL)) {
+
+                val matcher = "${curInsn.owner}#${curInsn.name}#${curInsn.desc}"
+                if (matcher != HackerContext.removeMethod) {
+                    idx--
+                    continue
+                }
+
                 val argumentTypes = Type.getArgumentTypes(curInsn.desc)
                 val isStatic = (curInsn.opcode and Opcodes.ACC_STATIC) != 0
 
