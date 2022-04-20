@@ -23,7 +23,8 @@ class TestCode {
     }
 
     private static void login() {
-
+//        System.out.println("哈哈 - 2");
+        Log.e("gy", "login");
     }
 
 //    public void test2(int flag) {

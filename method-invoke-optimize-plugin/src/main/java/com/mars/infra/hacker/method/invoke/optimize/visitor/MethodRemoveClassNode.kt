@@ -22,6 +22,7 @@ class MethodRemoveClassNode(private val classVisitor: ClassVisitor) : ClassNode(
                     && it.access and Opcodes.ACC_NATIVE == 0
                     && it.name != "<init>"
                     && it.name != "<clinit>"
+                    && name == "com/mars/infra/hacker/TestCode"  //  TODO-gy 测试专用
         }.forEach {
             transformer.transform(it)
         }
@@ -58,7 +59,7 @@ class MethodRemoveAdapter(methodTransformer: MethodTransformer?) :
                         || curInsn.opcode == Opcodes.INVOKEVIRTUAL)) {
 
                 val matcher = "${curInsn.owner}#${curInsn.name}#${curInsn.desc}"
-                if (matcher != HackerContext.removeMethod) {
+                if (!HackerContext.optimizeList.contains(matcher)) {
                     idx--
                     continue
                 }

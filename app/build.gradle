@@ -6,7 +6,9 @@ plugins {
 
 methodInvokeOptimize {
     enable = true
-    removeMethod = "com/mars/infra/hacker/Logger#ee#(Ljava/lang/String;Ljava/lang/String;)I"
+
+    optimizeList = ["android/util/Log#e#(Ljava/lang/String;Ljava/lang/String;)I",
+                    "com/mars/infra/hacker/Logger#ee#(Ljava/lang/String;Ljava/lang/String;)I"]
 }
 
 android {

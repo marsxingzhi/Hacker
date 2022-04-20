@@ -9,7 +9,9 @@ open class MethodInvokeOptimizeExtension {
     // internalName#methodName#methodDesc
     var removeMethod: String? = null
 
+    var optimizeList: Array<String>? = null
+
     override fun toString(): String {
-        return "enable: $enable, removeMethod = $removeMethod"
+        return "enable: $enable, optimizeList = $optimizeList"
     }
 }

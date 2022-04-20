@@ -19,4 +19,10 @@ data class Target(
 object HackerContext {
 
     var removeMethod: String? = null
+
+    val optimizeList = arrayListOf<String>()
+
+    fun clearOptimizeList() {
+        optimizeList.clear()
+    }
 }

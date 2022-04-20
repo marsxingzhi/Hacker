@@ -18,7 +18,11 @@ class MethodOptimizePlugin: Plugin<Project> {
         project.afterEvaluate {
             val methodInvokeOptimize = project.extensions.getByType(MethodInvokeOptimizeExtension::class.java)
             println("methodInvokeOptimize = $methodInvokeOptimize")
-            HackerContext.removeMethod = methodInvokeOptimize.removeMethod
+
+            methodInvokeOptimize.optimizeList?.let {
+                HackerContext.clearOptimizeList()
+                HackerContext.optimizeList.addAll(it)
+            }
         }
 
 
