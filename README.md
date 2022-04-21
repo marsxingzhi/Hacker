@@ -3,7 +3,8 @@ ByteCode Plugin Platform
 
 ### TODO   
 - [ ] 重新设计Hacker架构
-- [ ] method-invoke-optimize
+- [ ] method-invoke-optimize-plugin
+- [ ] doubleClick-plugin
 
 
 ### method-invoke-optimize    
@@ -40,3 +41,6 @@ methodInvokeOptimize {
 
 优化之后：
 ![method-invoke-optimize-after](./assets/method-invoke-optimize-after.png)
+
+### doubleClick-plugin     
+详细可见doubleClick-plugin项目的README

@@ -3,8 +3,10 @@ package com.mars.infra.hacker
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import com.mars.infra.base.util.DoubleClickCheck
 import com.mars.infra.lib.TestLibActivity
 
 class MainActivity : AppCompatActivity() {
@@ -24,9 +26,15 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        mBtnStartThread.setOnClickListener {
-            query()
-        }
+        mBtnStartThread.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(v: View?) {
+                // ASM添加
+//                if (DoubleClickCheck.isDoubleClick(v)) {
+//                    return
+//                }
+                query()
+            }
+        })
     }
 
     private fun query() {

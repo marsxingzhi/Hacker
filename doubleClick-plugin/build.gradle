@@ -1,0 +1,34 @@
+plugins {
+    id 'java-library'
+    id 'kotlin'
+    id 'maven-publish'
+}
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+repositories {
+    google()
+    jcenter()
+    mavenCentral()
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation gradleApi()
+    implementation "com.android.tools.build:gradle:4.1.3"
+
+    implementation project(":hacker-gradle-plugin")
+}
+
+publishing {
+    publications {
+        DoubleClickPlugin(MavenPublication) {
+            from components.kotlin
+            groupId 'com.mars.infra'
+            artifactId 'doubleClick-plugin'
+            version '0.0.1'
+        }
+    }
+}
