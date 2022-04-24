@@ -1,7 +1,11 @@
 rootProject.name = "Hacker"
+include ':app'
 include ':lib-1'
+include ':lib:base-util'
+include ':lib:thread'
+
 include ':hacker-gradle-plugin'
 include ':method-invoke-optimize-plugin'
-include ':app'
 include ':doubleClick-plugin'
-include ':lib:base-util'
+include ':thread-optimize-plugin'
+

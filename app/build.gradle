@@ -54,4 +54,5 @@ dependencies {
 
     implementation project(":lib-1")
     implementation project(":lib:base-util")
+    implementation project(":lib:thread")
 }

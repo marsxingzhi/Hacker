@@ -3,8 +3,9 @@ ByteCode Plugin Platform
 
 ### TODO   
 - [ ] 重新设计Hacker架构
-- [ ] method-invoke-optimize-plugin
-- [ ] doubleClick-plugin
+- [x] method-invoke-optimize-plugin
+- [x] doubleClick-plugin
+- [ ] thread-optimize-plugin
 
 
 ### method-invoke-optimize-plugin
@@ -14,3 +15,6 @@ ByteCode Plugin Platform
 ### doubleClick-plugin     
 双击判断
 详细可见doubleClick-plugin项目的README
+
+### thread-optimize-plugin  
+- [ ] hook Thread，替换成自定义类
