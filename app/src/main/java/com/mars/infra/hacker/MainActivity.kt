@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.mars.infra.base.util.DoubleClickCheck
+import com.mars.infra.hacker.test.ThreadTest
 import com.mars.infra.lib.TestLibActivity
 
 class MainActivity : AppCompatActivity() {
@@ -43,5 +44,9 @@ class MainActivity : AppCompatActivity() {
         }
         Log.e("mars","thread = $thread")
         thread.start()
+
+        ThreadTest.test()
+        ThreadTest.test1()
+        ThreadTest.test2()
     }
 }

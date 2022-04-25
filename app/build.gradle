@@ -3,6 +3,7 @@ plugins {
     id 'kotlin-android'
     id 'com.mars.infra.method.invoke.optimize.plugin'
     id 'com.mars.infra.doubleClick.plugin'
+    id 'com.mars.infra.thread.optimize.plugin'
 }
 
 methodInvokeOptimize {
