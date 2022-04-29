@@ -9,7 +9,8 @@ buildscript {
     dependencies {
         classpath "com.android.tools.build:gradle:4.1.0"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.30"
-//        classpath "com.mars.infra:hacker-plugin:0.0.7"
+
+        // gradle插件
         classpath "com.mars.infra:method-invoke-optimize-plugin:0.0.1"
         classpath "com.mars.infra:doubleClick-plugin:0.0.1"
         classpath "com.mars.infra:thread-optimize-plugin:0.0.1"

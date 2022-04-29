@@ -10,7 +10,7 @@ import org.objectweb.asm.tree.*
 /**
  * Created by Mars on 2022/4/24
  */
-class ThreadOptimizeClassNode(private val classVisitor: ClassVisitor) : ClassNode(Opcodes.ASM7) {
+class ThreadOptimizeClassNode(private val classVisitor: ClassVisitor) : ClassNode(Opcodes.ASM9) {
 
     companion object {
         const val TARGET_CLASS = "com/mars/infra/hacker/test/ThreadTest"
